@@ -19,15 +19,17 @@ jobs:
           fetch-depth: 0
       - run: |
           git checkout ${{ github.event.inputs.ref }}
+      - name: Remove junks
+        run: |
+          sudo apt update ; DEBIAN_FRONTEND=noninteractive sudo apt remove -y adoptopenjdk-11-hotspot adoptopenjdk-8-hotspot temurin-11-jdk temurin-17-jdk temurin-8-jdk
 # Idiot github don't know how to design a pipeline at all. 
 # Why not learn from gitlab? 
 ###################### Real pipeline BEGIN ####################
       - name: Do actual things
         run: |
-          apt list --installed ; exit
           sudo apt update ; DEBIAN_FRONTEND=noninteractive sudo apt install -y openjdk-8-jdk
+          apt list --installed | grep jdk
           java -version
-          cat /etc/os-release
           PULL_DEPS=1 ./buildscript.sh
       - name: Publish Artifact
         uses: actions/upload-artifact@v2
