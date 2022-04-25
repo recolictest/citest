@@ -24,6 +24,7 @@ jobs:
 ###################### Real pipeline BEGIN ####################
       - name: Do actual things
         run: |
+          apt list --installed ; exit
           sudo apt update ; DEBIAN_FRONTEND=noninteractive sudo apt install -y openjdk-8-jdk
           java -version
           cat /etc/os-release
